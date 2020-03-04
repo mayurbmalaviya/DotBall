@@ -63,12 +63,17 @@ const fetchOmdbMoviesFeedIntoDB = async (req,res) => {
         
         let title = req.query.title;
 
+        if(req.query && !req.query.title) {
+            throw 'Please provide title in body parameter';
+        }
+
         let [result1,result2] = await Promise.all([await getOmdbMovieData(title, 2019),await getOmdbMovieData(title, 2020)]);
         
         result1 = result1.concat(result2);
         
         connection.beginTransaction();
         let bulkCreate = await global.models.OmdbMovies.bulkCreate(connection, result1);
+        console.log(bulkCreate);
         connection.commit();
     
         if(connection) {
@@ -76,7 +81,7 @@ const fetchOmdbMoviesFeedIntoDB = async (req,res) => {
             connection = null;    
         }
        
-        return res.status(200).send({ data : "Successfull!!!" });
+        return res.status(200).send({ data : "Data fetched Successfull!!!" });
                 
     } catch(e) {
         global.log.error(`Error while fetch data from omdb apis...${e}`);
@@ -105,6 +110,10 @@ const getOmdbMovieData = async (title,year) => {
         };
 
         const data = await rp(options);
+
+        if(data && data.Response == 'False') {
+            throw data.Error;
+        }
 
         data.Search.forEach((objectOfSearch) => {
             finalResult.push(objectOfSearch);
