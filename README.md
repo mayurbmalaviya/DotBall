@@ -12,21 +12,5 @@
   - imdbID(VARCHAR(25))
   - Type(VARCHAR(25))
   - Poster(TEXT)
- * There are 3 apis : 
-  - API to show movies count by genre and year
-    - **POST**  localhost:3000/v1/omdb/countMovies  
-      - body : {
-                "genre":"movie",
-                "year":"2019"
-              }
-    
-  - API to get movie by genre, year, name
-    - **POST**  localhost:3000/v1/omdb
-      - body : {
-                "name" : "Batman",
-                "genre":"movie",
-                "year":"2019"
-                }
-   
-  - API to feed data to DB from OMDB API (Only Movie from Year 2019-20)
-    - **GET** localhost:3000/v1/omdb?title=batman
+ * There are 3 api call which I have mention in collection : 
+  - Import Postman collection from link : https://www.getpostman.com/collections/0832a53782af89905790
